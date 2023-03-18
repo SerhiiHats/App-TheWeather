@@ -1,0 +1,206 @@
+header {
+    height: 100px;
+    background: lightblue;
+    padding: 10px 0 0 0;
+}
+
+.flex-line {
+    display: flex;
+    align-items: center;
+}
+
+h2 {
+    margin: 8px 15px 2px;
+}
+
+header>.flex-line p {
+    margin: 9px 15px 1px;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+}
+
+h1 span {
+    color: #0099FF;
+}
+
+main {
+    background: rgb(231, 231, 231);
+}
+
+.container-weathers {
+    height: 700px;
+    background: white;
+    padding: 15px 0;
+    border-radius: 15px;
+}
+
+.loader {
+    font-size: 10px;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    position: relative;
+    text-indent: -9999em;
+    animation: mulShdSpin 1.1s infinite ease;
+    transform: translateZ(0);
+}
+
+@keyframes mulShdSpin {
+
+    0%,
+    100% {
+        box-shadow: 0em -2.6em 0em 0em #ffffff, 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.5), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.7);
+    }
+
+    12.5% {
+        box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.7), 1.8em -1.8em 0 0em #ffffff, 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.5);
+    }
+
+    25% {
+        box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.5), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.7), 2.5em 0em 0 0em #ffffff, 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+    }
+
+    37.5% {
+        box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.5), 2.5em 0em 0 0em rgba(255, 255, 255, 0.7), 1.75em 1.75em 0 0em #ffffff, 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+    }
+
+    50% {
+        box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.5), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.7), 0em 2.5em 0 0em #ffffff, -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+    }
+
+    62.5% {
+        box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.5), 0em 2.5em 0 0em rgba(255, 255, 255, 0.7), -1.8em 1.8em 0 0em #ffffff, -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+    }
+
+    75% {
+        box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.5), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.7), -2.6em 0em 0 0em #ffffff, -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+    }
+
+    87.5% {
+        box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.5), -2.6em 0em 0 0em rgba(255, 255, 255, 0.7), -1.8em -1.8em 0 0em #ffffff;
+    }
+}
+
+.card-weather {
+    width: 300px;
+    /* height: 300px; */
+    border: 1px solid red;
+    border-radius: 15px;
+    background: rgb(106, 162, 197);
+    color: rgb(243, 241, 241);
+    padding: 5px 5px 10px;
+}
+
+h3 {
+    border-bottom: 1px solid lightgray;
+    margin: 8px 0;
+    padding-bottom: 5px;
+}
+
+.card-weather p {
+    margin: 2px 0;
+}
+
+.card-weather h3 {
+    text-align: center;
+}
+
+.front-view {
+    /* height: 150px; */
+    border: 1px solid rgb(25, 0, 255);
+    display: flex;
+    justify-content: space-around;
+}
+
+.left-view {
+    width: 47%;
+    height: 100%;
+    border: 1px solid rgb(0, 255, 98);
+}
+
+.right-view {
+    width: 47%;
+    height: 100%;
+    border: 1px solid rgb(0, 255, 98);
+}
+
+.currently-date {
+    font-size: 10px;
+}
+
+.currently-time {
+    font-size: 26px;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 4px;
+}
+
+.container-temperature {
+    /* height: 20px; */
+    font-size: 10px;
+    display: flex;
+    border: 1px solid rgb(25, 0, 255);
+    display: flex;
+    justify-content: space-around;
+
+}
+
+.left-view-temperature {
+    width: 45%;
+    height: 100%;
+    border: 1px solid rgb(0, 255, 98);
+}
+
+.right-view-temperature {
+    width: 53%;
+    height: 100%;
+    border: 1px solid rgb(0, 255, 98);
+    padding-top: 8px;
+}
+
+.temperature {
+    font-size: 40px;
+}
+
+.description {
+    
+    border-bottom: 1px solid lightgray;
+    padding: 0 0 6px 30px;
+}
+
+.future-weather {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 12px;
+}
+
+.future-weather div {
+    border-right: 1px solid lightgrey;
+    padding-right: 5px;
+}
+
+.future-weather div:last-child {
+    border-right: none;
+    padding-right: 0;
+
+}
+
+.future-weather p {
+    margin: 2px;
+    font-size: 10px;
+}
+
+.footer-card{
+    text-align: center;
+    border-top: 1px solid lightgray;
+    margin-top: 12px;
+    padding-top: 7px;
+}
+
+
+footer {
+    height: 100px;
+    background: rgb(231, 231, 231);
+}
