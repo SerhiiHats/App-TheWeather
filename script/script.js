@@ -25,17 +25,19 @@ let repository = {
     cityName: "Kyiv",
     countryCode: "UA",
     current: "current",
+    hourly: "hourly",
     daily: "daily",
 
     //http://api.openweathermap.org/geo/1.0/direct?q=Kyiv,UA&limit=1&appid=cbcf4286e7eae1b583094a243e399ac5
     getWeather: function () {
-        // fetch(`${this.url}/geo/1.0/direct?q=${this.cityName},${this.countryCode}&limit=1&appid=${this.apiKey}`)
-fetch("http://api.openweathermap.org/geo/1.0/direct?q=Kyiv,UA&limit=1&appid=cbcf4286e7eae1b583094a243e399ac5")
+        fetch(`${this.url}/geo/1.0/direct?q=${this.cityName},${this.countryCode}&limit=1&appid=${this.apiKey}`)
+// fetch("http://api.openweathermap.org/geo/1.0/direct?q=Kyiv,UA&limit=1&appid=cbcf4286e7eae1b583094a243e399ac5")
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                console.log(`lat : ${data.lat} , lon : ${data.lon}`)
-                fetch(`${this.url}/data/3.0/onecall?lat=${data.lat}&lon=${data.lon}&exclude=${this.current},${this.daily}&appid=${this.apiKey}`)
+                console.log(`lat : ${data[0].lat} , lon : ${data[0].lon}`)
+                fetch(`${this.url}/data/3.0/onecall?lat=${data[0].lat}&lon=${data[0].lon}&exclude=${this.hourly},${this.daily}&appid=${this.apiKey}`)
+                //https://api.openweathermap.org/data/3.0/onecall?lat=50.4500336&lon=30.5241361&exclude=hourly,daily&appid=cbcf4286e7eae1b583094a243e399ac5
                     .then(response => response.json())
                     .then(weather => {
                         console.log(weather);
@@ -43,7 +45,8 @@ fetch("http://api.openweathermap.org/geo/1.0/direct?q=Kyiv,UA&limit=1&appid=cbcf
                         console.log("feels_like temp kelvin: " + weather.current.feels_like + ", temp celsius: " + (weather.current.feels_like - 273.15));
                         console.log("humidity: " + weather.current.humidity + " %");
                         console.log("wind: " + weather.current.wind_speed + " km/h");
-                        console.log("description: " + weather.current.weather[0].description + " km/h");
+                        console.log("description: " + weather.current.weather[0].description);
+                        console.log("icon: " + weather.current.weather[0].icon);
                         console.log("timezone: " + weather.timezone);
                     })
                 
