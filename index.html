@@ -12,10 +12,15 @@
 <body>
     <header>
         <div class="container flex-line">
-            <h1><span>The</span>Weather</h1>
-            <h2>Погода</h2>
-            <p>Город</p>
-            <p>настройки</p>
+            <div>
+                <h1><span>The</span>Weather</h1>
+                <h2>Погода</h2>
+            </div>
+
+            <div>
+                <p>Город</p>
+                <p>настройки</p>
+            </div>
         </div>
     </header>
 
@@ -26,28 +31,28 @@
                 <h3>City name</h3>
                 <div class="front-view">
                     <div class="left-view">
-                        <img src="images/4796-weather-cloudynight.gif" alt="Weather-cloudy(night)" width="100%">
+                        <!-- <img src="images/4796-weather-cloudynight.gif" alt="Weather-cloudy(night)" width="100%"> -->
                     </div>
                     <div class="right-view">
                         <p class="currently-date">March 17 - 2023 - Sat</p>
-                        <p class="currently-time">21:43</p>
+                        <p class="currently-time">00:00</p>
                         <div class="container-temperature">
                             <div class="left-view-temperature">
-                                <p class="temperature">27&deg;</p>
-                                <p>Hi 29&deg;</p>
-                                <p>Lo 19&deg;</p>
+                                <p class="temperature">00&deg;</p>
+                                <p>Hi <span class="temp-max">00&deg;</span></p>
+                                <p>Lo <span class="temp-min">00&deg;</span></p>
                             </div>
                             <div class="right-view-temperature">
-                                <p>Feel like : 25&deg;</p>
-                                <p>Humidily : 51%</p>
-                                <p>wind : 9 km/h</p>
-                            </div>                            
+                                <p>Feel like : <span class="feel-like">00&deg;</span></p>
+                                <p>Humidily : <span class="humidily">00%</span></p>
+                                <p>wind : <span class="wind"> 0 km/h</span></p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <p class="description">Partly Cloudy</p>
+                <p class="description">Partly Cloudy <img src="" alt=""></p>
                 <div class="future-weather">
-                    <div>
+                    <!-- <div>
                         <p>Mon</p>
                         <p>Hi 29&deg;</p>
                         <p>Lo 19&deg;</p>
@@ -81,7 +86,7 @@
                         <p>Mon</p>
                         <p>Hi 29&deg;</p>
                         <p>Lo 19&deg;</p>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="footer-card">
                     Weather
@@ -95,7 +100,7 @@
     <footer>
 
         <div class="container">
-            <span>lorem </span><span>lorem </span><span>lorem </span><span>lorem </span><span>lorem </span>
+            <small>© Design by Serhii Hats</small>
         </div>
     </footer>
     <script src="script/script.js"></script>

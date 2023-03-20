@@ -7,10 +7,16 @@ header {
 .flex-line {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
 h2 {
     margin: 8px 15px 2px;
+}
+
+header>.flex-line> div {
+    display: flex;
+    align-items: center;
 }
 
 header>.flex-line p {
@@ -86,12 +92,14 @@ main {
 
 .card-weather {
     width: 300px;
+    /* min-height: 381px; */
     /* height: 300px; */
-    border: 1px solid red;
+    /* border: 1px solid red; */
     border-radius: 15px;
     background: rgb(106, 162, 197);
     color: rgb(243, 241, 241);
     padding: 5px 5px 10px;
+    margin: auto;
 }
 
 h3 {
@@ -110,21 +118,22 @@ h3 {
 
 .front-view {
     /* height: 150px; */
-    border: 1px solid rgb(25, 0, 255);
+    /* border: 1px solid rgb(25, 0, 255); */
     display: flex;
     justify-content: space-around;
 }
 
 .left-view {
     width: 47%;
-    height: 100%;
-    border: 1px solid rgb(0, 255, 98);
+    min-height: 151px;
+    /* height: 100%; */
+    /* border: 1px solid rgb(0, 255, 98); */
 }
 
 .right-view {
     width: 47%;
     height: 100%;
-    border: 1px solid rgb(0, 255, 98);
+    /* border: 1px solid rgb(0, 255, 98); */
 }
 
 .currently-date {
@@ -141,7 +150,7 @@ h3 {
     /* height: 20px; */
     font-size: 10px;
     display: flex;
-    border: 1px solid rgb(25, 0, 255);
+    /* border: 1px solid rgb(25, 0, 255); */
     display: flex;
     justify-content: space-around;
 
@@ -150,13 +159,13 @@ h3 {
 .left-view-temperature {
     width: 45%;
     height: 100%;
-    border: 1px solid rgb(0, 255, 98);
+    /* border: 1px solid rgb(0, 255, 98); */
 }
 
 .right-view-temperature {
     width: 53%;
     height: 100%;
-    border: 1px solid rgb(0, 255, 98);
+    /* border: 1px solid rgb(0, 255, 98); */
     padding-top: 8px;
 }
 
@@ -170,10 +179,12 @@ h3 {
     padding: 0 0 6px 30px;
 }
 
-.future-weather {
+.future-weather {  
+    min-height: 99px;
     display: flex;
     justify-content: space-around;
     padding-top: 12px;
+
 }
 
 .future-weather div {
@@ -187,7 +198,7 @@ h3 {
 
 }
 
-.future-weather p {
+.future-weather p {  
     margin: 2px;
     font-size: 10px;
 }
@@ -202,5 +213,10 @@ h3 {
 
 footer {
     height: 100px;
-    background: rgb(231, 231, 231);
+    background: rgb(214, 214, 214);
+    color: rgb(128, 126, 126);
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
