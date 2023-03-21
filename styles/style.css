@@ -6,7 +6,7 @@ header {
 
 .flex-line {
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     justify-content: space-between;
 }
 
@@ -14,17 +14,52 @@ h2 {
     margin: 8px 15px 2px;
 }
 
-header>.flex-line> div {
+header>.flex-line>div,
+nav {
     display: flex;
     align-items: center;
 }
 
-header>.flex-line p {
-    margin: 9px 15px 1px;
+nav {
+    margin-top: 10px;
 }
 
+nav>ul,
+nav>ul>li {
+    display: inline;
+    /* height: 18px; */
+}
+
+/* menu {
+    margin: 0 10px;
+    padding: 0 10px;
+    height: 18px;
+} */
+
+ul,
+li {
+    height: 20px;
+    padding: 10px;
+    list-style-type: none;
+}
+
+.sub-menu {
+    top: 42px;
+    left: 20px;
+    text-align: end;
+}
+
+.sub-menu:hover{
+    background-color: #0099FF;
+}
+
+nav, ul, li{
+    position: relative;   
+}
+
+
 .container {
-    max-width: 800px;
+    max-width: 1024px;
     margin: auto;
 }
 
@@ -41,6 +76,18 @@ main {
     background: white;
     padding: 1px 0;
     border-radius: 15px;
+}
+
+.horison{
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.vertical {
+    display: flex;
+    flex-direction: column;
 }
 
 .loader {
@@ -91,7 +138,7 @@ main {
 }
 
 .card-weather {
-    width: 300px;   
+    width: 300px;
     border-radius: 15px;
     background: rgb(106, 162, 197);
     color: rgb(243, 241, 241);
@@ -120,12 +167,12 @@ h3 {
 
 .left-view {
     width: 47%;
-    min-height: 151px;  
+    min-height: 151px;
 }
 
 .right-view {
     width: 47%;
-    height: 100%;  
+    height: 100%;
 }
 
 .currently-date {
@@ -138,9 +185,9 @@ h3 {
     padding-bottom: 4px;
 }
 
-.container-temperature {   
+.container-temperature {
     font-size: 10px;
-    display: flex;   
+    display: flex;
     display: flex;
     justify-content: space-around;
 
@@ -148,12 +195,12 @@ h3 {
 
 .left-view-temperature {
     width: 45%;
-    height: 100%;  
+    height: 100%;
 }
 
 .right-view-temperature {
     width: 53%;
-    height: 100%;    
+    height: 100%;
     padding-top: 8px;
 }
 
@@ -161,12 +208,12 @@ h3 {
     font-size: 40px;
 }
 
-.description {    
+.description {
     border-bottom: 1px solid lightgray;
     padding: 0 0 6px 30px;
 }
 
-.future-weather {  
+.future-weather {
     min-height: 99px;
     display: flex;
     justify-content: space-around;
@@ -185,12 +232,12 @@ h3 {
 
 }
 
-.future-weather p {  
+.future-weather p {
     margin: 2px;
     font-size: 10px;
 }
 
-.footer-card{
+.footer-card {
     text-align: center;
     border-top: 1px solid lightgray;
     margin-top: 12px;

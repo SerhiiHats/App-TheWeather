@@ -16,16 +16,22 @@
                 <h1><span>The</span>Weather</h1>
                 <h2>Погода</h2>
             </div>
-
-            <div>
-                <p>Город</p>
-                <p>настройки</p>
-            </div>
+            <nav>
+                <ul>
+                    <li class="menu">Город</li>
+                    <li class="menu">настройки
+                        <ul>
+                            <li id="horison" class="sub-menu">горизонтально</li>
+                            <li id="vertical" class="sub-menu">вертикально</li>
+                        </ul>
+                    </li>
+                </ul>               
+            </nav>
         </div>
     </header>
 
     <main>
-        <div class="container container-weathers">
+        <div id="main" class="container container-weathers horison">
 
         </div>
     </main>
