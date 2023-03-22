@@ -6,7 +6,6 @@ header {
 
 .flex-line {
     display: flex;
-    /* align-items: center; */
     justify-content: space-between;
 }
 
@@ -27,14 +26,8 @@ nav {
 nav>ul,
 nav>ul>li {
     display: inline;
-    /* height: 18px; */
 }
 
-/* menu {
-    margin: 0 10px;
-    padding: 0 10px;
-    height: 18px;
-} */
 
 ul,
 li {
@@ -44,15 +37,13 @@ li {
 }
 
 .sub-menu {
-    top: 42px;
-    left: 20px;
+    left: 11px;
     text-align: end;
-    z-index: 1;
 }
 
 .sub-menu:hover {
     background-color: #0099FF;
-    /* z-index: 1; */
+    z-index: 1;
 }
 
 nav,
@@ -94,7 +85,7 @@ main {
     flex-direction: column;
 }
 
-.loader {
+/* .loader {
     font-size: 10px;
     width: 1em;
     height: 1em;
@@ -139,7 +130,7 @@ main {
     87.5% {
         box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.5), -2.6em 0em 0 0em rgba(255, 255, 255, 0.7), -1.8em -1.8em 0 0em #ffffff;
     }
-}
+} */
 
 .card-weather {
     width: 300px;
