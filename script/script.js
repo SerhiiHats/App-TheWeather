@@ -1,4 +1,5 @@
 const TIME_ZONE_OFF_SET = new Date().getTimezoneOffset() * 60 * 1000;
+const REQUEST_DELAY = 300000;
 const storageUrl = [
     "http://api.openweathermap.org/geo/1.0/direct?q=Kyiv,UA&limit=1&appid=cbcf4286e7eae1b583094a243e399ac5",
     "http://api.openweathermap.org/geo/1.0/direct?q=London,GB&limit=1&appid=cbcf4286e7eae1b583094a243e399ac5",
@@ -6,6 +7,7 @@ const storageUrl = [
 ];
 const storageStartingOfCity = [{ cityName: "Kyiv", country: "UA", lat: 50.4500336, lon: 30.5241361, timezone_offset: 7200, }, { cityName: "London", country: "GB", lat: 51.5073219, lon: -0.1276474, timezone_offset: 0, }, { cityName: "New York County", country: "US", lat: 40.7127281, lon: -74.0060152, timezone_offset: -14400, }];
 
+let arrayOfNewCity = [];
 
 function getLocationDate(timezone_offset) {
     return new Date(Date.now() + timezone_offset * 1000 + TIME_ZONE_OFF_SET);
@@ -26,16 +28,22 @@ function getParseDay(date) {
     return ArrDate[0];
 }
 
-function setVerticalView(){
+function setVerticalView() {
     let elementMain = document.querySelector("#main");
-        elementMain.classList.remove("horison");
-        elementMain.classList.add("vertical");
+    elementMain.classList.remove("horison");
+    elementMain.classList.add("vertical");
 }
 
-function setHorisonView(){
+function setHorisonView() {
     let elementMain = document.querySelector("#main");
-        elementMain.classList.remove("vertical");
-        elementMain.classList.add("horison");
+    elementMain.classList.remove("vertical");
+    elementMain.classList.add("horison");
+}
+
+function removeCardWeather(event) {
+    const date = new Date();
+    console.log(`${getParseTime(date)} ${getParseDate(date)} : елемент с class="card-weather" позиция в main и в массиве № ${event.target.parentElement.dataset.countCard} удален пользователем`);
+    event.target.parentElement.remove();
 }
 
 class City {
@@ -95,16 +103,45 @@ let repository = {
     hourly: "hourly",
     daily: "daily",
     alerts: "alerts",
+    arrayWeather: 0,
+    getCurrentlyWeather: function () {
+        let date = new Date();
+        if (localStorage.arrayStorageWeather) {
+            this.arrayWeather = JSON.parse(localStorage.arrayStorageWeather);
+            console.log(`${getParseTime(date)} ${getParseDate(date)} : localStorage.arrayStorageWeather - найден! Обьктов в массиве=${this.arrayWeather.length} был распарсен`);
+        } else {
+            this.arrayWeather = storageStartingOfCity;
+            console.log(`${getParseTime(date)} ${getParseDate(date)} : localStorage.arrayStorageWeather, не был найден! Применен стартовый storageStartingOfCity, обьктов в массиве=${this.arrayWeather.length}`);
+        }
+
+        this.getWeather(this.arrayWeather);
+    },
 
     getWeather: function (arrayOfCities) {
         for (let i = 0; i < arrayOfCities.length; i++) {
             servicesView.createCardWeather(arrayOfCities, i);
 
-            // fetch(`${this.url}/data/3.0/onecall?lat=${arrayOfCities[i].lat}&lon=${arrayOfCities[i].lon}&exclude=${this.minutely},${this.hourly}&appid=${this.apiKey}`)
-            //     .then(response => response.json())
-            //     .then(weather => {
-            //         servicesView.fillCardWeather(arrayOfCities, i, weather);
-            //     });
+            if (Date.now() - arrayOfCities[i].timeRequest < REQUEST_DELAY) {
+                servicesView.fillCardWeather(arrayOfCities, i, arrayOfCities[i])
+                let date = new Date();
+                console.log(`${getParseTime(date)} ${getParseDate(date)} : Таймер=${Date.now() - arrayOfCities[i].timeRequest} < ${REQUEST_DELAY} = ${Date.now() - arrayOfCities[i].timeRequest < REQUEST_DELAY}. Карта погоды была создана из localStorage.arrayStorageWeather, для города=${this.arrayWeather[i].cityName}`);
+            } else {
+                fetch(`${this.url}/data/3.0/onecall?lat=${arrayOfCities[i].lat}&lon=${arrayOfCities[i].lon}&exclude=${this.minutely},${this.hourly}&appid=${this.apiKey}`)
+                    .then(response => response.json())
+                    .then(weather => {
+                        let date = new Date();
+                        console.log(`${getParseTime(date)} ${getParseDate(date)} : Таймер=${Date.now() - arrayOfCities[i].timeRequest} > ${REQUEST_DELAY} = ${Date.now() - arrayOfCities[i].timeRequest < REQUEST_DELAY}. Карта погоды со всемы данными была создана из ${this.url}, для города=${this.arrayWeather[i].cityName}`);
+                        console.log(weather)
+                        weather.cityName = arrayOfCities[i].cityName;
+                        weather.country = arrayOfCities[i].country;
+                        weather.timeRequest = Date.now();
+                        arrayOfNewCity.push(weather);
+                        localStorage.setItem("arrayStorageWeather", JSON.stringify(arrayOfNewCity));
+                        servicesView.fillCardWeather(arrayOfCities, i, weather);
+                    });
+            }
+
+
         }
     },
 
@@ -127,6 +164,7 @@ class ServicesView {
         elementCardWeather.className = "card-weather";
         elementCardWeather.setAttribute("data-count-card", index);
         elementCardWeather.innerHTML = `
+        <span>x</span>
         <h3>${arrayOfCities[index].cityName}</h3>
         <div class="front-view"></div>
         <div class="future-weather"></div>
@@ -172,11 +210,23 @@ class ServicesView {
         }
 
         let timeId = setInterval(() => {
-            document.querySelector(`[data-count-card="${index}"] .currently-time`).textContent = getParseTime(getLocationDate(arrayOfCities[index].timezone_offset));
+            let elementTime = document.querySelector(`[data-count-card="${index}"] .currently-time`);
+            if (elementTime) {
+                elementTime.textContent = getParseTime(getLocationDate(arrayOfCities[index].timezone_offset));
+            } else {
+                timeId = null;
+            }
+            // document.querySelector(`[data-count-card="${index}"] .currently-time`).textContent = getParseTime(getLocationDate(arrayOfCities[index].timezone_offset));
         }, 1000);
 
         let timeIdDate = setInterval(() => {
-            document.querySelector(`[data-count-card="${index}"] .currently-date`).textContent = getParseDate(getLocationDate(arrayOfCities[index].timezone_offset));
+            let elementDate = document.querySelector(`[data-count-card="${index}"] .currently-date`);
+            if (elementDate) {
+                elementDate.textContent = getParseDate(getLocationDate(arrayOfCities[index].timezone_offset));
+            } else {
+                timeIdDate = null;
+            }
+            // document.querySelector(`[data-count-card="${index}"] .currently-date`).textContent = getParseDate(getLocationDate(arrayOfCities[index].timezone_offset));
         }, 1000);
     }
 
@@ -203,13 +253,15 @@ class ServicesView {
     // }
 }
 
-// let oneCity = [];
-// oneCity.push(storageStartingOfCity[0]);
+let oneCity = [];
+oneCity.push(storageStartingOfCity[0]);
 // console.log(oneCity)
 
 document.querySelector("#horison").addEventListener("click", setHorisonView);
 document.querySelector("#vertical").addEventListener("click", setVerticalView);
-
+document.querySelector("#main").addEventListener("click", removeCardWeather);
 
 let servicesView = new ServicesView();
-repository.getWeather(storageStartingOfCity);
+// repository.getWeather(oneCity);
+
+repository.getCurrentlyWeather();

@@ -47,14 +47,18 @@ li {
     top: 42px;
     left: 20px;
     text-align: end;
+    z-index: 1;
 }
 
-.sub-menu:hover{
+.sub-menu:hover {
     background-color: #0099FF;
+    /* z-index: 1; */
 }
 
-nav, ul, li{
-    position: relative;   
+nav,
+ul,
+li {
+    position: relative;
 }
 
 
@@ -78,7 +82,7 @@ main {
     border-radius: 15px;
 }
 
-.horison{
+.horison {
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
@@ -139,11 +143,32 @@ main {
 
 .card-weather {
     width: 300px;
+    min-height: 378px;
     border-radius: 15px;
     background: rgb(106, 162, 197);
     color: rgb(243, 241, 241);
     padding: 5px 5px 10px;
     margin: 20px auto;
+    position: relative;
+}
+
+.card-weather>span {
+    padding: 1px 8px 3px;
+    border-radius: 25px;
+    position: absolute;
+    top: 3px;
+    left: 284px;
+    user-select: none;
+}
+
+.card-weather>span:hover {
+    opacity: 0.5;
+    background-color: red;
+    color: white;
+}
+
+.card-weather>span:active {
+    opacity: 0.3;
 }
 
 h3 {
