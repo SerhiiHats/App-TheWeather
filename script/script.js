@@ -28,14 +28,12 @@ function getParseDay(date) {
 
 function setVerticalView() {
     let elementMain = document.querySelector("#main");
-    elementMain.classList.remove("horison");
     elementMain.classList.add("vertical");
 }
 
 function setHorisonView() {
     let elementMain = document.querySelector("#main");
     elementMain.classList.remove("vertical");
-    elementMain.classList.add("horison");
 }
 
 function removeCardWeather(event) {
