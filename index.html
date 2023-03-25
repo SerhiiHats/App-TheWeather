@@ -10,27 +10,31 @@
 </head>
 
 <body>
-    <header>
+    <header class="header">
         <div class="container flex-line">
-            <div>
+            <div class="logo">
                 <h1><span>The</span>Weather</h1>
                 <h2>Погода</h2>
             </div>
-            <nav>
-                <ul>
-                    <li class="menu">Город</li>
-                    <li class="menu">настройки
-                        <ul class="sub-menu">
-                            <li id="horison" class="sub-menu">горизонтально</li>
-                            <li id="vertical" class="sub-menu">вертикально</li>
-                            <li id="default" class="sub-menu">по умолчанию</li>
+            <nav class="menu">
+                <ul class="menu-list">
+                    <li>Город
+                        <ul class="sub-menu-list sub-menu-list-first">
+                            <li>найти</li>
                         </ul>
                     </li>
-                </ul>               
+                    <li>настройки
+                        <ul class="sub-menu-list">
+                            <li id="horison">горизонтально</li>
+                            <li id="vertical">вертикально</li>
+                            <li id="default">по умолчанию</li>
+                        </ul>
+                    </li>
+                </ul>
             </nav>
         </div>
     </header>
-    
+
     <main>
         <div id="main" class="container container-weathers horison">
 

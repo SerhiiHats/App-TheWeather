@@ -1,55 +1,93 @@
-header {
-    height: 100px;
+.header {
+    width: 100%;
     background: lightblue;
-    padding: 10px 0 0 0;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
 }
 
 .flex-line {
+    height: 100px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1 span {
+    color: #0099FF;
 }
 
 h2 {
     margin: 8px 15px 2px;
 }
 
-header>.flex-line>div,
-nav {
+.menu-list {
     display: flex;
-    align-items: center;
-}
-
-nav {
-    margin-top: 10px;
-}
-
-nav>ul,
-nav>ul>li {
-    display: inline;
-}
-
-
-ul,
-li {
-    height: 20px;
-    padding: 10px;
-    list-style-type: none;
-}
-
-.sub-menu {
-    left: 11px;
-    text-align: end;
-}
-
-.sub-menu:hover {
-    background-color: #0099FF;
-    z-index: 1;
-}
-
-nav,
-ul,
-li {
     position: relative;
+    margin: 0;
+}
+
+.menu-list li:hover {
+    text-decoration: underline;
+    background: #0099FF;
+    transition: all 0.3s ease 0s;
+}
+
+ul,
+ol,
+li {
+    list-style: none;
+    user-select: none;
+}
+
+.menu-list>li {
+    position: relative;
+    padding: 35px 30px;
+}
+
+.sub-menu-list {
+    position: absolute;
+    top: 85%;
+    right: 0;
+    background: lightblue;
+    padding: 10px 0;
+    min-width: 100px;
+}
+
+.sub-menu-list-first {
+    top: 94%;
+}
+
+.sub-menu-list li {
+    margin: 0 0 10px 0;
+    padding: 5px 15px;
+}
+
+.sub-menu-list li:last-child {
+    margin: 0;
+}
+
+.sub-menu-list {
+    transform: translate(0, 10%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all 0.3s ease 0s;
+}
+
+.menu-list>li:hover .sub-menu-list {
+    opacity: 0.95;
+    visibility: visible;
+    transform: translate(0px 0px);
+    pointer-events: all;
 }
 
 
@@ -58,11 +96,8 @@ li {
     margin: auto;
 }
 
-h1 span {
-    color: #0099FF;
-}
-
 main {
+    padding: 93px 0 0 0;
     background: rgb(231, 231, 231);
 }
 
