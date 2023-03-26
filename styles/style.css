@@ -211,10 +211,19 @@ h3 {
     text-align: center;
 }
 
+#spinner{
+    margin: 26px 0 0 75px;
+}
+
+.hidden{
+    display: none;
+}
+
 .front-view {
     display: flex;
     justify-content: space-around;
 }
+
 
 .left-view {
     width: 47%;
