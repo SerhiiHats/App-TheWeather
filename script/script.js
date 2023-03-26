@@ -1,5 +1,5 @@
 const TIME_ZONE_OFF_SET = new Date().getTimezoneOffset() * 60 * 1000;
-const REQUEST_DELAY = 300000;
+const REQUEST_DELAY = 30000000;
 const storageUrl = [
     "http://api.openweathermap.org/geo/1.0/direct?q=Kyiv,UA&limit=1&appid=cbcf4286e7eae1b583094a243e399ac5",
     "http://api.openweathermap.org/geo/1.0/direct?q=London,GB&limit=1&appid=cbcf4286e7eae1b583094a243e399ac5",
@@ -59,6 +59,8 @@ let repository = {
     daily: "daily",
     alerts: "alerts",
     arrayWeather: 0,
+    userCities: 0,
+
     getCurrentlyWeather: function () {
         let date = new Date();
         if (localStorage.storageLocalOfCity) {
@@ -73,6 +75,7 @@ let repository = {
     },
 
     getWeather: function (arrayOfCities) {
+        servicesView.clearContainerWeathers();
         for (let i = 0; i < arrayOfCities.length; i++) {
             servicesView.createCardWeather(arrayOfCities[i].cityName, i);
 
@@ -96,6 +99,22 @@ let repository = {
             }
         }
     },
+
+    getCitiesFromGeocoder: function (userCity) {
+        fetch(`${this.url}/geo/1.0/direct?q=${userCity}&limit=5&appid=${this.apiKey}`)
+            .then(response => response.json())
+            .then(userCities => {
+                console.log(userCities);
+                this.userCities = userCities;
+                servicesView.showCities(userCities);
+            })
+    },
+
+    addNewCity: function (index) {
+        this.userCities[index].cityName = this.userCities[index].name;
+        this.arrayWeather.push(this.userCities[index]);
+        this.getWeather(this.arrayWeather);
+    }
 }
 
 class ServicesView {
@@ -110,6 +129,10 @@ class ServicesView {
         <div class="future-weather"></div>
         <div class="footer-card">Weather</div>`;
         document.querySelector(".container-weathers").append(elementCardWeather);
+    }
+
+    clearContainerWeathers() {
+        document.querySelector(".container-weathers").textContent = "";
     }
 
     fillCardWeather(weather, index) {
@@ -168,7 +191,31 @@ class ServicesView {
             }
         }, 1000);
     }
+
+    showCities(data) {
+        let elementUl = document.querySelector("#show");
+        elementUl.textContent = "";
+        for (let i = 0; i < data.length; i++) {
+            let elementLi = document.createElement("li");
+            elementLi.classList.add("choose-city");
+            elementLi.setAttribute("data-count-city", i);
+            elementLi.textContent = `${data[i].name}, ${data[i].country}`;
+            if (data[i].state) {
+                elementLi.textContent += `, ${data[i].state}`;
+            }
+
+            console.log(i + ": name: " + data[i].name + ", country: " + data[i].country + ", state: " + data[i].state)
+            elementUl.append(elementLi);
+        }
+
+        if (data.length === 0) {
+            elementUl.innerHTML = `<li>Ничего не найдено</li>`;
+        }
+
+    }
 }
+
+
 
 function setDefaultSettings() {
     localStorage.removeItem("storageLocalOfCity");
@@ -178,10 +225,26 @@ function setDefaultSettings() {
     repository.getCurrentlyWeather();
 }
 
+function chooseCity(event) {
+    if (event.target.className !== "choose-city") {
+        return;
+    }
+    const date = new Date();
+    console.log(`${getParseTime(date)} ${getParseDate(date)} : елемент с class="shoose-city" позиция в списке и в массиве № ${event.target.dataset.countCity} добавлен пользователем`);
+    repository.addNewCity(event.target.dataset.countCity);
+}
+
 document.querySelector("#horison").addEventListener("click", setHorisonView);
 document.querySelector("#vertical").addEventListener("click", setVerticalView);
 document.querySelector("#default").addEventListener("click", setDefaultSettings);
 document.querySelector("#main").addEventListener("click", removeCardWeather);
+document.querySelector("#userFind").addEventListener("input", () => {
+    let userCity = document.querySelector("#userFind").value;
+    console.log("userCity: " + userCity)
+    repository.getCitiesFromGeocoder(userCity);
+})
+
+document.querySelector("#show").addEventListener("click", chooseCity);
 
 let servicesView = new ServicesView();
 repository.getCurrentlyWeather();

@@ -55,28 +55,29 @@ li {
 
 .sub-menu-list {
     position: absolute;
-    top: 85%;
+    top: 76px;
     right: 0;
     background: lightblue;
     padding: 10px 0;
-    min-width: 100px;
+    min-width: 131px;
 }
 
-.sub-menu-list-first {
-    top: 94%;
+.show-list{
+    min-width: 237px;
 }
 
-.sub-menu-list li {
+.sub-menu-list> li {
     margin: 0 0 10px 0;
     padding: 5px 15px;
 }
 
-.sub-menu-list li:last-child {
+.sub-menu-list >li:last-child {
     margin: 0;
 }
 
+
 .sub-menu-list {
-    transform: translate(0, 10%);
+    /* transform: translate(0, 10%); */
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
