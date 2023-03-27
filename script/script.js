@@ -37,7 +37,6 @@ function setHorisonView() {
 }
 
 
-
 let repository = {
     //http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
     //https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
@@ -53,6 +52,7 @@ let repository = {
     alerts: "alerts",
     arrayWeather: 0,
     userCities: 0,
+    turnOnSetCurrentTimeOfCity: true,
 
     getCurrentlyWeather: function () {
         let date = new Date();
@@ -67,6 +67,11 @@ let repository = {
         if (this.arrayWeather.length === 0) {
             this.arrayWeather = storageStartingOfCity;
             console.log(`${getParseTime(date)} ${getParseDate(date)} : localStorage.storageLocalOfCity, не был найден! Применен стартовый storageStartingOfCity, обьктов в массиве=${this.arrayWeather.length}`);
+        }
+
+        if (this.turnOnSetCurrentTimeOfCity) {
+            let timeId = setInterval(() => { this.getCurrentTimeOfCity() }, 1000);
+            this.turnOnSetCurrentTimeOfCity = false;
         }
 
         this.getWeather(this.arrayWeather);
@@ -98,6 +103,7 @@ let repository = {
                     .finally(
                         () => {
                             document.querySelector(`[data-count-card="${i}"] #spinner`).classList.add("hidden");
+                            document.querySelector("#userFind").value = "";
                         }
 
                     );
@@ -115,42 +121,31 @@ let repository = {
     },
 
     addNewCity: function (index) {
+        servicesView.showUserCity(this.userCities[index].name);
+
+
+
         this.arrayWeather.push(this.userCities[index]);
         this.getWeather(this.arrayWeather);
     },
 
     removeCity: function (index) {
-        console.log("remove TimeId " + this.arrayWeather[index].timeId)
-        console.log("remove timeIdDate " + this.arrayWeather[index].timeIdDate)
-        this.arrayWeather.forEach(weather => {
-            clearInterval(weather.timeId);
-            clearInterval(weather.timeIdDate);
-
-        });
-
-        for (let i = 0; i < this.arrayWeather.length; i++){
-              clearInterval(this.arrayWeather[index].timeId);
-        clearInterval(this.arrayWeather[index].timeIdDate);
-        }
-      
-
         this.arrayWeather.splice(index, 1);
         this.getWeather(this.arrayWeather);
         localStorage.setItem("storageLocalOfCity", JSON.stringify(this.arrayWeather));
     },
 
-    setTimeIdOfCity: function (index, timeId) {
-        this.arrayWeather[index].timeId = timeId;
-        console.log(index + ", set TimeId " + timeId)
+    getCurrentTimeOfCity: function () {
+        for (let i = 0; i < this.arrayWeather.length; i++) {
+            servicesView.showCurrentTimeOfCity(this.arrayWeather[i].timezone_offset, i);
+        }
     },
 
-    setTimeIdDateOfCity: function (index, timeIdDate) {
-        this.arrayWeather[index].timeIdDate = timeIdDate;
-        console.log(index + ", set TimeIdDate " + timeIdDate)
-    },
 }
 
 class ServicesView {
+    url = "https://openweathermap.org";
+
     createCardWeather(cityName, index) {
         let elementCardWeather = document.createElement("div");
         elementCardWeather.className = "card-weather";
@@ -173,11 +168,11 @@ class ServicesView {
         let elementFrontView = document.querySelector(`[data-count-card="${index}"] .front-view`);
         elementFrontView.insertAdjacentHTML("afterbegin", `
         <div class="left-view">
-        <img src='https://openweathermap.org/img/wn/${weather.current.weather[0].icon}@2x.png' alt="${weather.current.weather[0].description}" width='100%'>
+        <img src='${this.url}/img/wn/${weather.current.weather[0].icon}@2x.png' alt="${weather.current.weather[0].description}" width='100%'>
         </div>
         <div class="right-view">
-            <p class="currently-date">${getParseDate(getLocationDate(weather.timezone_offset))}</p>    <!-- arrayOfCities[index].timezone_offset -->
-            <p class="currently-time">${getParseTime(getLocationDate(weather.timezone_offset))}</p>    <!-- weather.timezone_offset -->
+            <p class="currently-date">${getParseDate(getLocationDate(weather.timezone_offset))}</p>
+            <p class="currently-time">${getParseTime(getLocationDate(weather.timezone_offset))}</p>
             <div class="container-temperature">
                 <div class="left-view-temperature">
                     <p class="temperature">${Math.round(weather.current.temp - 273.15)}&deg;</p>
@@ -201,35 +196,23 @@ class ServicesView {
             let elementFuturedWeather = document.createElement("div");
             elementFuturedWeather.innerHTML = `
             <p>${getParseDay(new Date(daily[x].dt * 1000))}</p>
-            <img src='https://openweathermap.org/img/wn/${daily[x].weather[0].icon}@2x.png' alt="${daily[x].weather[0].description}" width='36px'>
+            <img src='${this.url}/img/wn/${daily[x].weather[0].icon}@2x.png' alt="${daily[x].weather[0].description}" width='36px'>
             <p>Hi ${Math.round(daily[x].temp.max - 273.15)}&deg;</p>
             <p>Lo ${Math.round(daily[x].temp.min - 273.15)}&deg;</p>`;
             document.querySelector(`[data-count-card="${index}"] .future-weather`).append(elementFuturedWeather);
         }
+    }
 
-        let timeId = setInterval(() => {
-            let elementTime = document.querySelector(`[data-count-card="${index}"] .currently-time`);
+    showCurrentTimeOfCity(serverTimezoneOffSet, index) {
+        let elementTime = document.querySelector(`[data-count-card="${index}"] .currently-time`);
+        if (elementTime) {
+            elementTime.textContent = getParseTime(getLocationDate(serverTimezoneOffSet));
+        }
 
-            if (elementTime) {
-                elementTime.textContent = getParseTime(getLocationDate(weather.timezone_offset));
-                repository.setTimeIdOfCity(index, timeId);
-            } else {
-                console.log(`${index}-i timeId : ${timeId}`);
-                clearInterval(timeId);
-            }
-        }, 1000);
-
-        let timeIdDate = setInterval(() => {
-            let elementDate = document.querySelector(`[data-count-card="${index}"] .currently-date`);
-
-            if (elementDate) {
-                elementDate.textContent = getParseDate(getLocationDate(weather.timezone_offset));
-                repository.setTimeIdDateOfCity(index, timeIdDate);
-            } else {
-                console.log(`${index}-i timeIdDate : ${timeIdDate}`)
-                clearInterval(timeIdDate);
-            }
-        }, 1000);
+        let elementDate = document.querySelector(`[data-count-card="${index}"] .currently-date`);
+        if (elementDate) {
+            elementDate.textContent = getParseDate(getLocationDate(serverTimezoneOffSet));
+        }
     }
 
     showCities(data) {
@@ -243,15 +226,17 @@ class ServicesView {
             if (data[i].state) {
                 elementLi.textContent += `, ${data[i].state}`;
             }
-
-            console.log(i + ": name: " + data[i].name + ", country: " + data[i].country + ", state: " + data[i].state)
             elementUl.append(elementLi);
         }
 
         if (data.length === 0) {
             elementUl.innerHTML = `<li>Ничего не найдено</li>`;
         }
+    }
 
+    showUserCity(nameCity) {
+        document.querySelector("#userFind").value = nameCity;
+        document.querySelector("#show").textContent = "";
     }
 }
 
@@ -261,7 +246,6 @@ function setDefaultSettings() {
     localStorage.removeItem("storageLocalOfCity");
     let date = new Date();
     console.log(`${getParseTime(date)} ${getParseDate(date)} : localStorage.storageLocalOfCity - был удален пользователем, настройки приведены в первоначальное состояние`);
-    document.querySelector(".container-weathers").textContent = "";
     repository.getCurrentlyWeather();
 }
 
@@ -271,6 +255,7 @@ function chooseCity(event) {
     }
     const date = new Date();
     console.log(`${getParseTime(date)} ${getParseDate(date)} : елемент с class="shoose-city" позиция в списке и в массиве № ${event.target.dataset.countCity} добавлен пользователем`);
+
     repository.addNewCity(event.target.dataset.countCity);
 }
 
@@ -290,7 +275,6 @@ document.querySelector("#default").addEventListener("click", setDefaultSettings)
 document.querySelector("#main").addEventListener("click", removeCardWeather);
 document.querySelector("#userFind").addEventListener("input", () => {
     let userCity = document.querySelector("#userFind").value;
-    console.log("userCity: " + userCity)
     repository.getCitiesFromGeocoder(userCity);
 })
 
@@ -299,6 +283,3 @@ document.querySelector("#show").addEventListener("click", chooseCity);
 let servicesView = new ServicesView();
 repository.getCurrentlyWeather();
 
-let f = [];
-console.log(f.length)
-console.log(JSON.parse(localStorage.storageLocalOfCity).length)

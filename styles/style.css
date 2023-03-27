@@ -30,13 +30,13 @@ h2 {
 }
 
 .menu-list {
-    display: flex;
     position: relative;
     margin: 0;
+    display: flex;
+    align-items: center;
 }
 
 .menu-list li:hover {
-    text-decoration: underline;
     background: #0099FF;
     transition: all 0.3s ease 0s;
 }
@@ -46,43 +46,50 @@ ol,
 li {
     list-style: none;
     user-select: none;
+    padding: 0;
 }
 
-.menu-list>li {
+.menu-list>li:last-child {
     position: relative;
-    padding: 35px 30px;
+    padding: 38px 30px;
+}
+
+.menu-list>li:first-child {
+    position: relative;
+    padding: 30px 5px;
+}
+
+#userFind {
+    width: 219px;
+    height: 30px;
+    font-size: 16px;
+    border-radius: 5px;
 }
 
 .sub-menu-list {
     position: absolute;
-    top: 76px;
+    top: 96px;
     right: 0;
     background: lightblue;
-    padding: 10px 0;
+    padding: 0;
     min-width: 131px;
-}
-
-.show-list{
-    min-width: 237px;
-}
-
-.sub-menu-list> li {
-    margin: 0 0 10px 0;
-    padding: 5px 15px;
-}
-
-.sub-menu-list >li:last-child {
-    margin: 0;
-}
-
-
-.sub-menu-list {
-    /* transform: translate(0, 10%); */
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
     transition: all 0.3s ease 0s;
 }
+
+
+
+.show-list {
+    min-width: 283px;
+}
+
+.sub-menu-list>li {
+    padding: 15px 15px;
+}
+
+
 
 .menu-list>li:hover .sub-menu-list {
     opacity: 0.95;
@@ -211,11 +218,11 @@ h3 {
     text-align: center;
 }
 
-#spinner{
+#spinner {
     margin: 26px 0 0 75px;
 }
 
-.hidden{
+.hidden {
     display: none;
 }
 
