@@ -60,7 +60,7 @@ let repository = {
             this.arrayWeather = JSON.parse(localStorage.storageLocalOfCity);
             console.log(`${getParseTime(date)} ${getParseDate(date)} : localStorage.storageLocalOfCity - найден! Обьктов в массиве=${this.arrayWeather.length} был распарсен`);
         } else {
-            this.arrayWeather = storageStartingOfCity;
+            this.arrayWeather = storageStartingOfCity.slice(0);
             console.log(`${getParseTime(date)} ${getParseDate(date)} : localStorage.storageLocalOfCity, не был найден! Применен стартовый storageStartingOfCity, обьктов в массиве=${this.arrayWeather.length}`);
         }
 
