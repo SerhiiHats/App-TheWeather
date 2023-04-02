@@ -11,7 +11,7 @@
 
 <body>
     <header class="header">
-        <div class="container flex-line">
+        <div class="container flex-line flex-wrap">
             <div class="logo">
                 <h1><span>The</span>Weather</h1>
                 <h2>Погода</h2>
@@ -19,8 +19,8 @@
             <nav class="menu">
                 <ul class="menu-list">
                     <li>
-                        <input type="text" name="userCity" id="userFind" placeholder="Enter your City...">
-                        <label for="userCity">Поиск</label>
+                        <label for="userCity">Поиск: </label>
+                        <input type="text" name="userCity" id="userFind" placeholder="Enter your City...">                        
                         <ul id="show" class="sub-menu-list show-list">
                             <!-- <li>Kyiv</li>
                             <li>Mikolaev</li>
@@ -28,7 +28,7 @@
                         </ul>
                     </li>
                     <li>настройки
-                        <ul class="sub-menu-list">
+                        <ul class="sub-menu-list setting-list">
                             <li id="horison">горизонтально</li>
                             <li id="vertical">вертикально</li>
                             <li id="default">по умолчанию</li>

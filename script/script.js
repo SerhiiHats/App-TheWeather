@@ -1,10 +1,11 @@
 const TIME_ZONE_OFF_SET = new Date().getTimezoneOffset() * 60 * 1000;
-const REQUEST_DELAY = 30000000;
-const storageUrl = [
-    "http://api.openweathermap.org/geo/1.0/direct?q=Kyiv,UA&limit=1&appid=cbcf4286e7eae1b583094a243e399ac5",
-    "http://api.openweathermap.org/geo/1.0/direct?q=London,GB&limit=1&appid=cbcf4286e7eae1b583094a243e399ac5",
-    "http://api.openweathermap.org/geo/1.0/direct?q=New York,US&limit=1&appid=cbcf4286e7eae1b583094a243e399ac5"
-];
+const REQUEST_DELAY = 300000;
+const MAX_CITIES = 6;
+// const storageUrl = [
+//     "http://api.openweathermap.org/geo/1.0/direct?q=Kyiv,UA&limit=1&appid=cbcf4286e7eae1b583094a243e399ac5",
+//     "http://api.openweathermap.org/geo/1.0/direct?q=London,GB&limit=1&appid=cbcf4286e7eae1b583094a243e399ac5",
+//     "http://api.openweathermap.org/geo/1.0/direct?q=New York,US&limit=1&appid=cbcf4286e7eae1b583094a243e399ac5"
+// ];
 const storageStartingOfCity = [{ name: "Kyiv", country: "UA", lat: 50.4500336, lon: 30.5241361, timezone_offset: 7200, }, { name: "London", country: "GB", lat: 51.5073219, lon: -0.1276474, timezone_offset: 0, }, { name: "New York County", country: "US", lat: 40.7127281, lon: -74.0060152, timezone_offset: -14400, }];
 
 function getLocationDate(timezone_offset) {
@@ -78,7 +79,8 @@ let repository = {
     },
 
     getWeather: function (arrayOfCities) {
-        servicesView.clearContainerWeathers();
+        servicesView.clearElementById("#main");
+
         for (let i = 0; i < arrayOfCities.length; i++) {
             servicesView.createCardWeather(arrayOfCities[i].name, i);
 
@@ -87,7 +89,7 @@ let repository = {
                 let date = new Date();
                 console.log(`${getParseTime(date)} ${getParseDate(date)} : Таймер=${Date.now() - arrayOfCities[i].timeRequest} < ${REQUEST_DELAY} = ${Date.now() - arrayOfCities[i].timeRequest < REQUEST_DELAY}. Карта погоды была создана из localStorage.storageLocalOfCity, для города=${this.arrayWeather[i].name}`);
             } else {
-                document.querySelector(`[data-count-card="${i}"] #spinner`).classList.remove("hidden");
+                servicesView.turnOnPreloder(i);
                 fetch(`${this.url}/data/3.0/onecall?lat=${arrayOfCities[i].lat}&lon=${arrayOfCities[i].lon}&exclude=${this.minutely},${this.hourly}&appid=${this.apiKey}`)
                     .then(response => response.json())
                     .then(weather => {
@@ -102,8 +104,8 @@ let repository = {
                     })
                     .finally(
                         () => {
-                            document.querySelector(`[data-count-card="${i}"] #spinner`).classList.add("hidden");
-                            document.querySelector("#userFind").value = "";
+                            servicesView.switchOfPreloder(i);
+                            servicesView.clearInputById("#userFind");
                         }
 
                     );
@@ -121,12 +123,24 @@ let repository = {
     },
 
     addNewCity: function (index) {
+        let allowed = true;
         servicesView.showUserCity(this.userCities[index].name);
+        if (this.arrayWeather.length >= MAX_CITIES) {
+            allowed = confirm(`       Вы пытаетесь добавть город: "${this.userCities[index].name}". \nЛимит к просмотру: "${MAX_CITIES}" городов одновременно! \nУдалить последний город и добавить город: "${this.userCities[index].name}"`);
 
+            if (!allowed) {
+                servicesView.clearInputById("#userFind");
+                return;
+            }
 
+            servicesView.deleteCardWeather(this.arrayWeather.length - 1);
+            this.arrayWeather.pop();
+        }
 
-        this.arrayWeather.push(this.userCities[index]);
-        this.getWeather(this.arrayWeather);
+        if (allowed) {
+            this.arrayWeather.push(this.userCities[index]);
+            this.getWeather(this.arrayWeather);
+        }
     },
 
     removeCity: function (index) {
@@ -158,10 +172,6 @@ class ServicesView {
         <div class="future-weather"></div>
         <div class="footer-card">Weather</div>`;
         document.querySelector(".container-weathers").append(elementCardWeather);
-    }
-
-    clearContainerWeathers() {
-        document.querySelector(".container-weathers").textContent = "";
     }
 
     fillCardWeather(weather, index) {
@@ -236,7 +246,27 @@ class ServicesView {
 
     showUserCity(nameCity) {
         document.querySelector("#userFind").value = nameCity;
-        document.querySelector("#show").textContent = "";
+        this.clearElementById("#show");
+    }
+
+    turnOnPreloder(index) {
+        document.querySelector(`[data-count-card="${index}"] #spinner`).classList.remove("hidden");
+    }
+
+    switchOfPreloder(index) {
+        document.querySelector(`[data-count-card="${index}"] #spinner`).classList.add("hidden");
+    }
+
+    clearElementById(strIdElement) {
+        document.querySelector(strIdElement).textContent = "";
+    }
+
+    clearInputById(strIdInput) {
+        document.querySelector(strIdInput).value = "";
+    }
+
+    deleteCardWeather(index) {
+        document.querySelector(`[data-count-card="${index}"]`).remove();
     }
 }
 
@@ -254,7 +284,7 @@ function chooseCity(event) {
         return;
     }
     const date = new Date();
-    console.log(`${getParseTime(date)} ${getParseDate(date)} : елемент с class="shoose-city" позиция в списке и в массиве № ${event.target.dataset.countCity} добавлен пользователем`);
+    console.log(`${getParseTime(date)} ${getParseDate(date)} : елемент с class="shoose-city" позиция в списке и в массиве № ${event.target.dataset.countCity} добавляется пользователем`);
 
     repository.addNewCity(event.target.dataset.countCity);
 }
@@ -273,12 +303,14 @@ document.querySelector("#horison").addEventListener("click", setHorisonView);
 document.querySelector("#vertical").addEventListener("click", setVerticalView);
 document.querySelector("#default").addEventListener("click", setDefaultSettings);
 document.querySelector("#main").addEventListener("click", removeCardWeather);
+
 document.querySelector("#userFind").addEventListener("input", () => {
     let userCity = document.querySelector("#userFind").value;
     repository.getCitiesFromGeocoder(userCity);
 })
 
 document.querySelector("#show").addEventListener("click", chooseCity);
+
 
 let servicesView = new ServicesView();
 repository.getCurrentlyWeather();
